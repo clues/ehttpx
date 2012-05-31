@@ -4,28 +4,24 @@ DEST:=$(PREFIX)$(PROJECT)
 
 REBAR=./rebar
 
-all:
-	@rm -rf ./deps
-	@$(REBAR) get-deps	
-	@$(REBAR)  compile
+rebuild:	del_deps \
+	get_deps \
+	clean \
+	compile
 
 edoc:
 	@$(REBAR) doc
 
-compile:
-	@$(REBAR) compile
-
-test: clean \
+test:clean \
 	compile
 	@$(REBAR) ct
 
 clean:
 	@$(REBAR) clean
 	@rm -rf ./test/*.beam
-	@rm -f skyFS-storage.zip
 
-build_plt:
-	@$(REBAR) skyFS-storage-plt
+compile:
+	@$(REBAR) compile
 
 dialyzer:
 	@$(REBAR) dialyze
@@ -36,12 +32,18 @@ get_deps:	del_deps
 del_deps:
 	@rm -rf ./deps
 
+update-deps:
+	@$(REBAR) update-deps
 test-compile:
 	@erlc -I include  -W0 -DTEST=true -o ./ebin src/*.erl
 
 test_suite:clean \
-	compile
-	@$(REBAR) ct suite=ct_group
+		compile
+		@$(REBAR) ct suite=ehttpx
 	
-
+app:
+	@$(REBAR) create-app appid=$(PROJECT)	
+	
+	
+	
 	

@@ -1,0 +1,12 @@
+{application, ehttpx,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { ehttpx_app, []}},
+  {env, []}
+ ]}.
